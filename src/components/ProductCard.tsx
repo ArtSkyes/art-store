@@ -1,4 +1,11 @@
-import { Card, CardContent, CardMedia, Typography, Button, CardActions } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  CardActions,
+} from '@mui/material';
 import { Product } from '../types/product';
 import { useCart } from '../hooks/useCart';
 
@@ -11,11 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Card>
-      <CardMedia
-        component="img"
-        image={product.imageurl}
-        alt={product.name}
-      />
+      <CardMedia component="img" image={product.imageurl} alt={product.name} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {product.name}

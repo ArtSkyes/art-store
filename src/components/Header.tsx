@@ -1,8 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Badge } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Badge,
+  SvgIcon,
+} from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import { useCartStore } from '../store/cartStore';
+import { Brush } from '@mui/icons-material';
 
 const Header: React.FC = () => {
   const { user, signOut } = useAuth();
@@ -10,23 +18,26 @@ const Header: React.FC = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          Art Store
+      <Toolbar sx={{ color: '#F1E5D1' }}>
+        <SvgIcon color="inherit" sx={{ fontSize: 35, mr: 1, color: '#F1E5D1' }}>
+          <Brush />
+        </SvgIcon>
+        <Typography variant="h4" style={{ flexGrow: 1, color: '#F1E5D1' }}>
+          <strong> Art </strong>Store
         </Typography>
         <Button color="inherit" component={Link} to="/">
           Home
         </Button>
         <Button color="inherit" component={Link} to="/cart">
-          <Badge badgeContent={cart.reduce((acc, item) => acc + item.quantity, 0)} color="secondary">
+          <Badge
+            badgeContent={cart.reduce((acc, item) => acc + item.quantity, 0)}
+            color="secondary"
+          >
             Cart
           </Badge>
         </Button>
         {user ? (
           <>
-            <Typography variant="body1" style={{ marginRight: '10px' }}>
-              User ID: {user.id}
-            </Typography>
             <Button color="inherit" onClick={signOut}>
               Logout
             </Button>

@@ -10,9 +10,16 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
+    fontFamily: 'Poppins, sans-serif',
   },
   components: {
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#987070',
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -45,6 +52,20 @@ const theme = createTheme({
         root: {
           marginTop: '16px',
           marginBottom: '16px',
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#C39898',
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: '#F1E5D1',
         },
       },
     },

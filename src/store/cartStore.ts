@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { supabase } from '../config/supabaseClient';
 import { CartItem } from '../types/cart';
 import { Product } from '../types/product';
+import { toast } from 'react-toastify';
 
 interface CartState {
   cart: CartItem[];
@@ -10,6 +11,8 @@ interface CartState {
   removeFromCart: (id: string) => void;
   clearCart: () => void;
   fetchCart: (user_id: string) => void;
+  resetCart: () => void;
+  updateCartItemQuantity: (id: string, quantity: number) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -19,9 +22,18 @@ export const useCartStore = create<CartState>()(
       addToCart: async (product) => {
         const {
           data: { session },
+          error: sessionError,
         } = await supabase.auth.getSession();
+        if (sessionError) {
+          console.error(sessionError);
+          return;
+        }
+
         const user = session?.user;
-        if (!user) return;
+        if (!user) {
+          console.error('User is not authenticated');
+          return;
+        }
 
         const existingItem = get().cart.find(
           (i) => i.product_id === product.id,
@@ -42,6 +54,8 @@ export const useCartStore = create<CartState>()(
 
           if (error) {
             console.error(error);
+          } else {
+            toast.success('Item added to cart', { position: 'bottom-left' });
           }
         } else {
           const newItem: CartItem = {
@@ -59,15 +73,26 @@ export const useCartStore = create<CartState>()(
 
           if (error) {
             console.error(error);
+          } else {
+            toast.success('Item added to cart', { position: 'bottom-left' });
           }
         }
       },
       removeFromCart: async (id) => {
         const {
           data: { session },
+          error: sessionError,
         } = await supabase.auth.getSession();
+        if (sessionError) {
+          console.error(sessionError);
+          return;
+        }
+
         const user = session?.user;
-        if (!user) return;
+        if (!user) {
+          console.error('User is not authenticated');
+          return;
+        }
 
         set({ cart: get().cart.filter((item) => item.id !== id) });
 
@@ -79,24 +104,37 @@ export const useCartStore = create<CartState>()(
 
         if (error) {
           console.error(error);
+        } else {
+          toast.success('Item removed from cart', { position: 'bottom-left' });
         }
       },
       clearCart: async () => {
         const {
           data: { session },
+          error: sessionError,
         } = await supabase.auth.getSession();
-        const user = session?.user;
-        if (user) {
-          const { error } = await supabase
-            .from('carts')
-            .delete()
-            .eq('user_id', user.id);
-
-          if (error) {
-            console.error(error);
-          }
+        if (sessionError) {
+          console.error(sessionError);
+          return;
         }
-        set({ cart: [] });
+
+        const user = session?.user;
+        if (!user) {
+          console.error('User is not authenticated');
+          return;
+        }
+
+        const { error } = await supabase
+          .from('carts')
+          .delete()
+          .eq('user_id', user.id);
+
+        if (error) {
+          console.error(error);
+        } else {
+          set({ cart: [] });
+          toast.success('Cart cleared', { position: 'bottom-left' });
+        }
       },
       fetchCart: async (user_id) => {
         const { data, error } = await supabase
@@ -110,6 +148,42 @@ export const useCartStore = create<CartState>()(
         }
 
         set({ cart: data });
+      },
+      resetCart: () => {
+        set({ cart: [] });
+      },
+      updateCartItemQuantity: async (id, quantity) => {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+        if (sessionError) {
+          console.error(sessionError);
+          return;
+        }
+
+        const user = session?.user;
+        if (!user) {
+          console.error('User is not authenticated');
+          return;
+        }
+
+        const updatedCart = get().cart.map((item) =>
+          item.id === id ? { ...item, quantity } : item,
+        );
+        set({ cart: updatedCart });
+
+        const { error } = await supabase
+          .from('carts')
+          .update({ quantity })
+          .eq('user_id', user.id)
+          .eq('id', id);
+
+        if (error) {
+          console.error(error);
+        } else {
+          toast.success('Item quantity updated', { position: 'bottom-left' });
+        }
       },
     }),
     { name: 'cart-store' },

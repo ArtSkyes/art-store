@@ -8,7 +8,7 @@ export function useAuth() {
   const navigate = useNavigate();
   const { user, setUser, clearUser } = useUserStore();
   const fetchCart = useCartStore((state) => state.fetchCart);
-  const clearCart = useCartStore((state) => state.clearCart);
+  const resetCart = useCartStore((state) => state.resetCart);
 
   useEffect(() => {
     const getSession = async () => {
@@ -33,10 +33,9 @@ export function useAuth() {
         if (userId) {
           fetchCart(userId);
         }
-        navigate('/');
       }
       if (event === 'SIGNED_OUT') {
-        clearCart();
+        resetCart();
         navigate('/login');
       }
     });
@@ -44,12 +43,12 @@ export function useAuth() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate, setUser, fetchCart, clearCart]);
+  }, [navigate, setUser, fetchCart, resetCart]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
     clearUser();
-    clearCart();
+    resetCart();
     navigate('/login');
   };
 
