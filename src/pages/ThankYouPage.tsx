@@ -5,11 +5,17 @@ const ThankYouPage: React.FC = () => {
   return (
     <Container maxWidth="sm">
       <Box mt={5}>
-        <Typography sx={{ textAlign: 'center' }} variant="h4" gutterBottom>
-          Thank You for Your Order!
+        <Typography
+          sx={{ textAlign: 'center', fontWeight: 600 }}
+          variant="h3"
+          gutterBottom
+        >
+          Thank You for <br />
+          Your Order!
         </Typography>
-        <Typography sx={{ textAlign: 'center' }} variant="body1">
-          Your order has been placed successfully. We appreciate your business!
+        <Typography sx={{ textAlign: 'center' }} variant="h6">
+          Your order has been placed successfully. <br />
+          We appreciate your business!
         </Typography>
       </Box>
     </Container>
