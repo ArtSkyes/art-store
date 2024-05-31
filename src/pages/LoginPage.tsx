@@ -4,20 +4,32 @@ import { Container, TextField, Button, Typography, Alert } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '../config/supabaseClient';
 import { useUserStore } from '../store/userStore';
+import { useCartStore } from '../store/cartStore';
 import { LoginSchema, LoginSchemaType } from '../types/index';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginSchemaType>({
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
   });
   const setUser = useUserStore((state) => state.setUser);
+  const fetchCart = useCartStore((state) => state.fetchCart);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
     setErrorMessage(null);
 
     try {
-      const { data: { user }, error } = await supabase.auth.signInWithPassword({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
@@ -28,6 +40,8 @@ const LoginPage: React.FC = () => {
 
       if (user) {
         setUser(user);
+        fetchCart(user.id);
+        navigate('/');
       }
     } catch (error: any) {
       if (error.message.includes('Invalid login credentials')) {

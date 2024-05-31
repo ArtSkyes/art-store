@@ -1,16 +1,16 @@
-import { create } from 'zustand';
+import { useCartStore } from '../store/cartStore';
 import { Product } from '../types/product';
 
-interface CartState {
-  cartItems: Product[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: string) => void;
-  clearCart: () => void;
-}
+export const useCart = () => {
+  const addToCart = useCartStore((state) => state.addToCart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const cart = useCartStore((state) => state.cart);
 
-export const useCart = create<CartState>((set) => ({
-  cartItems: [],
-  addToCart: (product) => set((state) => ({ cartItems: [...state.cartItems, product] })),
-  removeFromCart: (productId) => set((state) => ({ cartItems: state.cartItems.filter(item => item.id !== productId) })),
-  clearCart: () => set({ cartItems: [] }),
-}));
+  return {
+    addToCart: (product: Product) => addToCart(product),
+    removeFromCart: (id: string) => removeFromCart(id),
+    clearCart: () => clearCart(),
+    cart,
+  };
+};

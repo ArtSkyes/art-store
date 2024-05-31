@@ -7,7 +7,11 @@ import { useUserStore } from '../store/userStore';
 import { SignUpSchema, SignUpSchemaType } from '../types/index';
 
 const SignUpPage: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<SignUpSchemaType>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
   });
   const setUser = useUserStore((state) => state.setUser);
@@ -19,12 +23,15 @@ const SignUpPage: React.FC = () => {
     setSuccessMessage(null);
 
     try {
-      const { data: { user }, error } = await supabase.auth.signUp({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           data: {
-            password: data.password, 
+            password: data.password,
           },
         },
       });
@@ -35,7 +42,9 @@ const SignUpPage: React.FC = () => {
 
       if (user) {
         setUser(user);
-        setSuccessMessage('Sign up successful! Please check your email to confirm your account.');
+        setSuccessMessage(
+          'Sign up successful! Please check your email to confirm your account.',
+        );
       }
     } catch (error: any) {
       if (error.message.includes('Email rate limit exceeded')) {

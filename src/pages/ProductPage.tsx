@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Typography, Button, Card, CardContent, CardMedia } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+} from '@mui/material';
 import { supabase } from '../config/supabaseClient';
 import { Product } from '../types/product';
 import { useCart } from '../hooks/useCart';
+import Spinner from '../components/Spinner';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,7 +41,7 @@ const ProductPage: React.FC = () => {
     }
   }, [id]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner loading={isLoading} />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -42,7 +50,7 @@ const ProductPage: React.FC = () => {
         <CardMedia
           component="img"
           height="400"
-          image={product?.imageUrl}
+          image={product?.imageurl}
           alt={product?.name}
         />
         <CardContent>
