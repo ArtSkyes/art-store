@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#F1E5D1',
     },
     secondary: {
       main: '#dc004e',
@@ -62,10 +62,10 @@ const theme = createTheme({
         },
       },
     },
-    MuiTypography: {
+    MuiIconButton: {
       styleOverrides: {
         root: {
-          color: '#F1E5D1',
+          color: '#987070',
         },
       },
     },

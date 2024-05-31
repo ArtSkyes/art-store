@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Container, TextField, Button, Typography, Alert } from '@mui/material';
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  Box,
+  Link,
+} from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '../config/supabaseClient';
 import { useUserStore } from '../store/userStore';
@@ -54,33 +62,69 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Login
-      </Typography>
-      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          label="Email"
-          {...register('email')}
-          fullWidth
-          margin="normal"
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          {...register('password')}
-          fullWidth
-          margin="normal"
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
-        <Button type="submit" variant="contained" color="primary">
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          mt: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography
+          variant="h4"
+          gutterBottom
+          style={{
+            color: '#F1E5D1',
+            fontWeight: 600,
+            textAlign: 'center',
+            marginBottom: '10px',
+          }}
+        >
           Login
-        </Button>
-      </form>
+        </Typography>
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 1, width: '100%' }}
+        >
+          <TextField
+            label="Email"
+            {...register('email')}
+            fullWidth
+            margin="normal"
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            {...register('password')}
+            fullWidth
+            margin="normal"
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+          >
+            Login
+          </Button>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Typography variant="body2">
+              Don't have an account?{' '}
+              <Link href="/signup" variant="body2">
+                Sign up
+              </Link>
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
     </Container>
   );
 };

@@ -15,6 +15,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useNavigate } from 'react-router-dom';
 
 const CartPage: React.FC = () => {
@@ -61,18 +62,33 @@ const CartPage: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Typography variant="h4" gutterBottom>
-        Your Cart
+      <Typography
+        variant="h4"
+        gutterBottom
+        style={{
+          color: '#F1E5D1',
+          fontWeight: 600,
+          textAlign: 'left',
+        }}
+      >
+        <Box component="span" display="flex" alignItems="center">
+          <ShoppingCartOutlinedIcon
+            fontSize="large"
+            sx={{ mr: 1, fontWeight: 600 }}
+          />
+          Your Cart
+        </Box>
       </Typography>
-      <Box display="flex" justifyContent="flex-end">
-        <Button variant="contained" color="secondary" onClick={clearCart}>
-          Clear Cart
-        </Button>
-      </Box>
+
       {cart.length === 0 ? (
         <Typography variant="body1">Your cart is empty.</Typography>
       ) : (
         <>
+          <Box display="flex" justifyContent="flex-end">
+            <Button variant="contained" color="secondary" onClick={clearCart}>
+              Clear Cart
+            </Button>
+          </Box>
           <Grid container spacing={1}>
             {cart.map((item) => (
               <Grid item xs={12} key={item.id}>
@@ -82,6 +98,7 @@ const CartPage: React.FC = () => {
                     alignItems: 'center',
                     padding: 1,
                     width: '100%',
+                    backgroundColor: '#C39898',
                   }}
                 >
                   <CardMedia
@@ -112,7 +129,13 @@ const CartPage: React.FC = () => {
                             )
                           }
                           inputProps={{ min: 1 }}
-                          sx={{ width: 60 }}
+                          sx={{
+                            width: '60%',
+                            minWidth: 30,
+                            height: '20%',
+                            minHeight: 30,
+                            whiteSpace: 'nowrap',
+                          }}
                         />
                       ) : (
                         <Typography variant="body2">
@@ -154,15 +177,18 @@ const CartPage: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-          <Typography variant="h6" align="right" mt={4}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            style={{
+              color: '#F1E5D1',
+              fontWeight: 600,
+              textAlign: 'right',
+            }}
+          >
             Total: ${total.toFixed(2)}
           </Typography>
-          <Box
-            mt={4}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box mt={4} display="flex" justifyContent="flex-end">
             <Button
               variant="contained"
               color="primary"
