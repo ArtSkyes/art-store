@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { User } from '@supabase/supabase-js';
 
@@ -17,7 +17,7 @@ export const useUserStore = create<UserState>()(
     }),
     {
       name: 'user-storage',
-      storage: createJSONStorage(() => localStorage), 
-    }
-  )
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
 );
