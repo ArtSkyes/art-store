@@ -14,7 +14,7 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
       <CardMedia
         component="img"
         height="140"
-        image={product.imageUrl}
+        image={product.imageurl}
         alt={product.name}
       />
       <CardContent>

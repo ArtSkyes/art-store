@@ -1,18 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Badge } from '@mui/material';
-import { useUserStore } from '../store/userStore';
-import { useCart } from '../hooks/useCart';
-import { supabase } from '../config/supabaseClient';
+import { useAuth } from '../hooks/useAuth';
+import { useCartStore } from '../store/cartStore';
 
 const Header: React.FC = () => {
-  const { user, clearUser } = useUserStore();
-  const { cartItems } = useCart();
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    clearUser();
-  };
+  const { user, signOut } = useAuth();
+  const cart = useCartStore((state) => state.cart);
 
   return (
     <AppBar position="static">
@@ -24,7 +18,7 @@ const Header: React.FC = () => {
           Home
         </Button>
         <Button color="inherit" component={Link} to="/cart">
-          <Badge badgeContent={cartItems.length} color="secondary">
+          <Badge badgeContent={cart.reduce((acc, item) => acc + item.quantity, 0)} color="secondary">
             Cart
           </Badge>
         </Button>
@@ -33,7 +27,7 @@ const Header: React.FC = () => {
             <Typography variant="body1" style={{ marginRight: '10px' }}>
               User ID: {user.id}
             </Typography>
-            <Button color="inherit" onClick={handleLogout}>
+            <Button color="inherit" onClick={signOut}>
               Logout
             </Button>
           </>

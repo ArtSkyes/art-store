@@ -4,6 +4,7 @@ import { Container, TextField, Button, Typography, Alert } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '../config/supabaseClient';
 import { useUserStore } from '../store/userStore';
+import { useCartStore } from '../store/cartStore';
 import { LoginSchema, LoginSchemaType } from '../types/index';
 
 const LoginPage: React.FC = () => {
@@ -11,6 +12,7 @@ const LoginPage: React.FC = () => {
     resolver: zodResolver(LoginSchema),
   });
   const setUser = useUserStore((state) => state.setUser);
+  const fetchCart = useCartStore((state) => state.fetchCart);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
@@ -28,6 +30,7 @@ const LoginPage: React.FC = () => {
 
       if (user) {
         setUser(user);
+        fetchCart(user.id);
       }
     } catch (error: any) {
       if (error.message.includes('Invalid login credentials')) {

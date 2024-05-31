@@ -1,5 +1,4 @@
-// src/components/ProductCard.tsx
-import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Button, CardActions } from '@mui/material';
 import { Product } from '../types/product';
 import { useCart } from '../hooks/useCart';
 
@@ -14,8 +13,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <Card>
       <CardMedia
         component="img"
-        height="140"
-        image={product.imageUrl}
+        image={product.imageurl}
         alt={product.name}
       />
       <CardContent>
@@ -28,10 +26,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Typography variant="h6" color="textPrimary">
           ${product.price}
         </Typography>
-        <Button variant="contained" color="primary" onClick={() => addToCart(product)}>
+      </CardContent>
+      <CardActions sx={{ justifyContent: 'center' }}>
+        <Button
+          variant="contained"
+          onClick={() => addToCart(product)}
+          sx={{ textAlign: 'center' }}
+        >
           Add to Cart
         </Button>
-      </CardContent>
+      </CardActions>
     </Card>
   );
 };
