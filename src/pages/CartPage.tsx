@@ -81,7 +81,7 @@ const CartPage: React.FC = () => {
       </Typography>
 
       {cart.length === 0 ? (
-        <Typography variant="body1">Your cart is empty.</Typography>
+        <Typography variant="h6">Your cart is empty.</Typography>
       ) : (
         <>
           <Box display="flex" justifyContent="flex-end">
