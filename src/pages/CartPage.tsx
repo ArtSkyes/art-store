@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useCartStore } from '../store/cartStore';
 import {
   Container,
@@ -24,19 +24,9 @@ const CartPage: React.FC = () => {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
-  const [total, setTotal] = useState<number>(0);
 
-  useEffect(() => {
-    const calculateTotal = () => {
-      const totalAmount = cart.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0,
-      );
-      setTotal(totalAmount);
-    };
-
-    calculateTotal();
-  }, [cart]);
+  const total =
+    cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
 
   const handleCheckout = () => {
     clearCart();
